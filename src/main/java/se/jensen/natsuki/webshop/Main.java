@@ -8,5 +8,6 @@ public class Main {
         AdminPortal adminPortal = new AdminPortal(scanner);
         adminPortal.startWorking();
         scanner.close();
+
     }
 }
