@@ -1,0 +1,23 @@
+{
+  "A003" : {
+    "articleNumber" : "A003",
+    "title" : "Dot rug",
+    "price" : 3000,
+    "description" : "Dot roud rug",
+    "category" : "rug"
+  },
+  "A001" : {
+    "articleNumber" : "A001",
+    "title" : "Banana sofa",
+    "price" : 30000,
+    "description" : "Sofa for 3",
+    "category" : "sofa"
+  },
+  "A002" : {
+    "articleNumber" : "A002",
+    "title" : "Peach lamp",
+    "price" : 2000,
+    "description" : "Peach colored lamp",
+    "category" : "lighting"
+  }
+}

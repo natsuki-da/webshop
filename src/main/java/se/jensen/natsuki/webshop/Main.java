@@ -1,5 +1,7 @@
 package se.jensen.natsuki.webshop;
 
+import se.jensen.natsuki.webshop.controller.AdminProductController;
+
 import java.util.Scanner;
 
 public class Main {

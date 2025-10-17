@@ -1,6 +1,9 @@
-package se.jensen.natsuki.webshop;
+package se.jensen.natsuki.webshop.model;
 
 public class Admin {
+    private String userName;
+    private int password;
+
     public String getUserName() {
         return userName;
     }
@@ -30,7 +33,4 @@ public class Admin {
         }
         this.password = password;
     }
-
-    private String userName;
-    private int password;
 }

@@ -1,10 +1,14 @@
 package se.jensen.natsuki.webshop.model;
 
 public class Rug extends Product {
-    static final String CATEGORY = "Category: Rug";
+    private final String category = "rug";
+
+    public String getCategory() {
+        return category;
+    }
 
     @Override
-    public void category() {
-        System.out.println(CATEGORY);
+    public String category() {
+        return category;
     }
 }

@@ -1,31 +1,29 @@
 package se.jensen.natsuki.webshop;
 
-import se.jensen.natsuki.webshop.model.Lighting;
-import se.jensen.natsuki.webshop.model.Product;
-import se.jensen.natsuki.webshop.model.Rug;
-import se.jensen.natsuki.webshop.model.Sofa;
+import se.jensen.natsuki.webshop.controller.AdminProductController;
+import se.jensen.natsuki.webshop.model.*;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AdminPortal {
-    //Adminがログイン(Admin class)した後にメニュー(Menu class)を選ぶ
     private Scanner scanner;
-    Map<String, Object> productsData = new HashMap<>();
+    private final AdminProductController adminProductController;
+    private final ProductFileDao productFileDao;
+    private boolean running = true;
+
 
     public AdminPortal(Scanner scanner) {
         this.scanner = scanner;
+        this.adminProductController = new AdminProductController(scanner);
+        this.productFileDao = new ProductFileDao();
     }
 
     public void startWorking() {
         Admin admin = new Admin();
-        //初めてのユーザーでパスワードがない場合
+        //add createAccount() later
         setAdmin(admin);
-        Menu menu = new Menu(scanner);
-
         chooseMenu();
-        //2回目以降のログインの場合
+        //existing admin login
     }
 
     public void setAdmin(Admin admin) {
@@ -33,29 +31,29 @@ public class AdminPortal {
         String userName = scanner.nextLine();
         System.out.println("Password:");
         int password = scanner.nextInt();
-        scanner.nextLine();
         admin.setUserName(userName);
         admin.setPassword(password);
     }
 
-    public void login() {
-    }
-
-    public void verify() {
-    }
-
     public void chooseMenu() {
-        System.out.println("Choose from menu:");
-        System.out.println("1: Add a product\n2: List up products\n3: Show a specific product\n4. EXIT");
-        int choice = scanner.nextInt();
         scanner.nextLine();
-        switch (choice) {
-            case 1 -> chooseProductType();
-            case 2 -> listProducts();
-            case 3 -> showProduct();
-            case 4 -> exitAdminPortal();
-            default -> System.out.println("You need to choose an option ");
+        while (running) {
+            printMenuBar();
+            int choice = Integer.parseInt(scanner.nextLine());
+            switch (choice) {
+                case 1 -> chooseProductType();
+                case 2 -> listAllProducts();
+                case 3 -> showSpecificProduct();
+                case 4 -> leaveAdminPortal();
+                default -> System.out.println("You need to choose an option ");
+            }
         }
+    }
+
+    public void printMenuBar() {
+        System.out.println("----- MENU -----");
+        System.out.println("(Choose a number from the options below)");
+        System.out.println("1: Add a product\n2: List all products\n3: Show a specific product\n4. LEAVE");
     }
 
     public void chooseProductType() {
@@ -65,47 +63,36 @@ public class AdminPortal {
         switch (choice) {
             case 1 -> {
                 Sofa sofa = new Sofa();
-                addProduct(sofa);
+                adminProductController.addProduct(sofa);
+                productFileDao.addProduct(sofa);
             }
             case 2 -> {
                 Lighting lighting = new Lighting();
-                addProduct(lighting);
+                adminProductController.addProduct(lighting);
+                productFileDao.addProduct(lighting);
             }
             case 3 -> {
                 Rug rug = new Rug();
-                addProduct(rug);
+                adminProductController.addProduct(rug);
+                productFileDao.addProduct(rug);
             }
             default -> System.out.println("Invalid choice. Please select a valid product type.");
         }
     }
 
-    public void addProduct(Product product) {
-        System.out.println("Enter article number; ");
-        product.setArticleNumber(scanner.nextLine());
-        System.out.println("Enter title; ");
-        product.setTitle(scanner.nextLine());
-        System.out.println("Enter price; ");
-        product.setPrice(scanner.nextInt());
-        scanner.nextLine();
-        System.out.println("Enter description; ");
-        product.setDescription(scanner.nextLine());
-        productsData.put(product.getArticleNumber(), product.toString());
-        chooseMenu();
+    public void listAllProducts() {
+        adminProductController.listProducts();
+        productFileDao.listProducts();
     }
 
-    public void listProducts() {
-        productsData.forEach((key, value) -> System.out.println("TEST YOO " + key + " " + value));
-        chooseMenu();
+    public void showSpecificProduct() {
+        System.out.println("Please enter the article number you are looking for.");
+        String articleNumber = scanner.nextLine();
+        productFileDao.showProduct(articleNumber.toUpperCase());
     }
 
-    public void showProduct() {
-        System.out.println("Enter the article number you are looking for");
-        System.out.println(productsData.get(scanner.nextLine()));
-        chooseMenu();
+    public void leaveAdminPortal() {
+        System.out.println("Great work today!");
+        running = false;
     }
-
-    public void exitAdminPortal() {
-        System.out.println("Exit");
-    }
-
 }

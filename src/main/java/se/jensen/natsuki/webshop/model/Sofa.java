@@ -1,11 +1,15 @@
 package se.jensen.natsuki.webshop.model;
 
 public class Sofa extends Product {
-    static final String CATEGORY = "Category: Sofa";
+    private final String category = "sofa";
+
+    public String getCategory() {
+        return category;
+    }
 
     @Override
-    public void category() {
-        System.out.println(CATEGORY);
+    public String category() {
+        return category;
     }
 
 

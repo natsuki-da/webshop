@@ -1,5 +1,20 @@
 package se.jensen.natsuki.webshop.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "category"
+)
+
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Sofa.class, name = "sofa"),
+        @JsonSubTypes.Type(value = Lighting.class, name = "lighting"),
+        @JsonSubTypes.Type(value = Rug.class, name = "rug"),
+})
 
 public abstract class Product {
     private String articleNumber;
@@ -11,28 +26,28 @@ public abstract class Product {
         return articleNumber;
     }
 
-    public void setArticleNumber(String articleNumber) {
-        this.articleNumber = articleNumber;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setArticleNumber(String articleNumber) {
+        this.articleNumber = articleNumber;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public void setDescription(String description) {
@@ -41,13 +56,14 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        return "Product {" +
-                "articleNumber='" + articleNumber + '\'' +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", description='" + description + '\'' +
-                '}';
+        return "article number: '" + articleNumber + '\'' +
+                ", title: '" + title + '\'' +
+                ", price: " + price +
+                ", description: " + description;
     }
 
-    public abstract void category();
+    @JsonProperty("category")
+    public abstract String category();
+
+//    public abstract String category();
 }
